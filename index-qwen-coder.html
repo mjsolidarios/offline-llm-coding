@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy Bird Clone</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+    background: #70c5ce; /* Sky blue */
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const gravity = 0.5;
+  const birdSize = 30;
+  let birdY = canvas.height / 2;
+  let birdVelocity = 0;
+  let isGameOver = false;
+
+  function drawBird() {
+    ctx.fillStyle = '#ffcc00'; // Yellow bird
+    ctx.fillRect(canvas.width / 10, birdY, birdSize, birdSize);
+  }
+
+  function updateGame() {
+    if (isGameOver) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    birdVelocity += gravity;
+    birdY += birdVelocity;
+
+    // Ground collision
+    if (birdY + birdSize > canvas.height) {
+      isGameOver = true;
+      alert('Game Over! Refresh to play again.');
+      return;
+    }
+
+    drawBird();
+  }
+
+  function flap() {
+    birdVelocity = -10; // Jump effect
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      flap();
+    }
+  });
+
+  setInterval(updateGame, 20);
+</script>
+</body>
+</html>
+
